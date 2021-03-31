@@ -226,7 +226,7 @@ namespace SonyRS232
         {
             try
             {
-                AddToLog("Staring playback...");
+                AddToLog("Starting playback...");
                 sp.Write(start, 0, start.Length);
             }
             catch (InvalidOperationException)
