@@ -77,8 +77,9 @@ namespace SonyRS232
         public string modelnumber;
         public string CurrentHEXResponse;
         delegate void SetTextCallback(string text);
-        private Queue<byte> recievedData = new Queue<byte>();
+        //private Queue<byte> recievedData = new Queue<byte>();
         public SerialPort sp = new SerialPort();
+        public bool PortAvailable = true;
         public MainForm()
         {
             Application.ApplicationExit += new EventHandler(OnApplicationExit); // Override exit so that the CD player gets remote turned off.
@@ -101,14 +102,17 @@ namespace SonyRS232
                     //MessageBox.Show(cmbSerialPorts.SelectedItem.ToString());
                     //Connect using first available port.
                     Connect(cmbSerialPorts.SelectedItem.ToString());
+                    PortAvailable = true;
                 }
                 else
                 {
-                    MessageBox.Show("Please select a port first");
+                    PortAvailable = false;
+                    MessageBox.Show("No serial port seems to be detected! Please plug in or install a COM/Serial port.");
                 }
             }
             catch (Exception error)
             {
+                PortAvailable = false;
                 MessageBox.Show("Error while selecting serial port: " + error.Message);
             }
             // Set form up so that it looks nice
@@ -136,14 +140,14 @@ namespace SonyRS232
                 sp.DataBits = 8;
                 sp.StopBits = StopBits.One;
                 sp.Open();
-                sp.DataReceived += new SerialDataReceivedEventHandler(serialPort_DataReceived); // Thread for recieving status data.
+                sp.DataReceived += new SerialDataReceivedEventHandler(SerialPort_DataReceived); // Thread for recieving status data.
             }
             catch (Exception error)
             {
                 MessageBox.Show(error.Message);
             }
         }
-        private void serialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             // Read incoming data stream
             int bytesToRead = sp.BytesToRead;
@@ -209,17 +213,26 @@ namespace SonyRS232
 
         private void InitButton_Click(object sender, EventArgs e)
         {
-            AddToLog("Sending Remote ON");
-            sp.Write(remoteon, 0, remoteon.Length);
-            InitButton.Enabled = false;
-            DeInitButton.Enabled = true;
-            playbackControls.Enabled = true;
-            TransportControls.Enabled = true;
-            VariSpeedGroup.Enabled = true;
-            // Display unit information:
-            //sp.Write(modeldata, 0, modeldata.Length);
-            //sp.Write(statusdata, 0, statusdata.Length);
-            //sp.Write(discdata, 0, discdata.Length);
+            if (PortAvailable == true) // Only if a port is set to use.
+            {
+                {
+                    AddToLog("Sending Remote ON");
+                    sp.Write(remoteon, 0, remoteon.Length);
+                    InitButton.Enabled = false;
+                    DeInitButton.Enabled = true;
+                    playbackControls.Enabled = true;
+                    TransportControls.Enabled = true;
+                    VariSpeedGroup.Enabled = true;
+                    // Display unit information:
+                    //sp.Write(modeldata, 0, modeldata.Length);
+                    //sp.Write(statusdata, 0, statusdata.Length);
+                    //sp.Write(discdata, 0, discdata.Length);
+                }
+            }
+            else
+            {
+                MessageBox.Show("No port was used when setting up, please connect a serial interface!");
+            }
         }
 
         private void StartButton_Click(object sender, EventArgs e)
@@ -492,47 +505,55 @@ namespace SonyRS232
         }
         private void ModeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Switch case to look at mode and set it accordingly.
-            switch (ModeComboBox.Text)
+            if (PortAvailable == true) // Only if a port is set to use.
             {
+                switch (ModeComboBox.Text)
+                {
+                    // Switch case to look at mode and set it accordingly.
+                    case "Continous":
+                        AddToLog("Selecting Continous mode...");
+                        sp.Write(continousplay, 0, continousplay.Length);
+                        break;
 
-                case "Continous":
-                    AddToLog("Selecting Continous mode...");
-                    sp.Write(continousplay, 0, continousplay.Length);
-                    break;
-
-                case "1-Track-Pause":
-                    AddToLog("Selecting 1-Track-Pause mode...");
-                    sp.Write(onetrackpausemode, 0, onetrackpausemode.Length);
-                    break;
-            }
+                    case "1-Track-Pause":
+                        AddToLog("Selecting 1-Track-Pause mode...");
+                        sp.Write(onetrackpausemode, 0, onetrackpausemode.Length);
+                        break;
+                }
+            }           
         }
 
         private void RepeatComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Switch case to look at mode and set it accordingly.
-            switch (RepeatComboBox.Text)
+            if (PortAvailable == true) // Only if a port is set to use.
             {
-                case "Off":
-                    AddToLog("Repeat is now off.");
-                    sp.Write(repeatoff, 0, repeatoff.Length);
-                    break;
+                // Switch case to look at mode and set it accordingly.
+                switch (RepeatComboBox.Text)
+                {
+                    case "Off":
+                        AddToLog("Repeat is now off.");
+                        sp.Write(repeatoff, 0, repeatoff.Length);
+                        break;
 
-                case "All":
-                    AddToLog("Repeat all tracks.");
-                    sp.Write(repeatall, 0, repeatall.Length);
-                    break;
-                case "1 Track":
-                    AddToLog("Repeat 1 track.");
-                    sp.Write(repeatonetrack, 0, repeatonetrack.Length);
-                    break;
+                    case "All":
+                        AddToLog("Repeat all tracks.");
+                        sp.Write(repeatall, 0, repeatall.Length);
+                        break;
+                    case "1 Track":
+                        AddToLog("Repeat 1 track.");
+                        sp.Write(repeatonetrack, 0, repeatonetrack.Length);
+                        break;
+                }
             }
         }
 
         private void ModelButton_Click(object sender, EventArgs e)
         {
-            // Force CDP to output its model name.
-            sp.Write(modelname, 0, modelname.Length);
+            if (PortAvailable == true) // Only if a port is set to use.
+            {
+                // Force CDP to output its model name.
+                sp.Write(modelname, 0, modelname.Length);
+            }
         }
 
         public void DecodeCDStatusCode(string input, byte[] bytes)
@@ -745,7 +766,7 @@ namespace SonyRS232
             }        
         }
 
-        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        private void MenuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             MessageBox.Show(Application.ProductName + "Controller for Sony CDP-D1x." 
                 + Environment.NewLine + "Version: " + Application.ProductVersion
