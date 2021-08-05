@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "LN/S2F3eMTM9y5TpBSe40QLluQLKSOB2qpNpC+keGjI6YyPg8X88MvLF3D1byeYq9bMsht3JXh4hv60zOcpFPA==",
+  "dgSpecHash": "lD0c6LtHflAO37oozoEYIWFFw9Of3j1joOdCzXvpD7Y5rdyyg2/fglCcGoIFcTGiYFBDX4nQj3c9T/cIMK4MJQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\quint\\Documents\\GitHub\\SonyRS232\\SonyRS232\\SonyRS232.csproj",
+  "projectFilePath": "C:\\Users\\quint\\source\\repos\\SonyRS232\\SonyRS232\\SonyRS232.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\quint\\.nuget\\packages\\microsoft.netcore.platforms\\5.0.0\\microsoft.netcore.platforms.5.0.0.nupkg.sha512",
     "C:\\Users\\quint\\.nuget\\packages\\microsoft.win32.registry\\5.0.0\\microsoft.win32.registry.5.0.0.nupkg.sha512",

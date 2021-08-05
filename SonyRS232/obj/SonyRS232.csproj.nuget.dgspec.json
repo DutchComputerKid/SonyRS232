@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\quint\\Documents\\GitHub\\SonyRS232\\SonyRS232\\SonyRS232.csproj": {}
+    "C:\\Users\\quint\\source\\repos\\SonyRS232\\SonyRS232\\SonyRS232.csproj": {}
   },
   "projects": {
-    "C:\\Users\\quint\\Documents\\GitHub\\SonyRS232\\SonyRS232\\SonyRS232.csproj": {
+    "C:\\Users\\quint\\source\\repos\\SonyRS232\\SonyRS232\\SonyRS232.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\quint\\Documents\\GitHub\\SonyRS232\\SonyRS232\\SonyRS232.csproj",
+        "projectUniqueName": "C:\\Users\\quint\\source\\repos\\SonyRS232\\SonyRS232\\SonyRS232.csproj",
         "projectName": "SonyRS232",
-        "projectPath": "C:\\Users\\quint\\Documents\\GitHub\\SonyRS232\\SonyRS232\\SonyRS232.csproj",
+        "projectPath": "C:\\Users\\quint\\source\\repos\\SonyRS232\\SonyRS232\\SonyRS232.csproj",
         "packagesPath": "C:\\Users\\quint\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\quint\\Documents\\GitHub\\SonyRS232\\SonyRS232\\obj\\",
+        "outputPath": "C:\\Users\\quint\\source\\repos\\SonyRS232\\SonyRS232\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\quint\\AppData\\Roaming\\NuGet\\NuGet.Config",
